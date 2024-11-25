@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: mytttptestpro
+  datasource:
+    url: jdbc:mysql://localhost:3306/test01
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: smtp.qq.com
+    protocol: smtp
+    username:  2085337304@qq.com
+    password:  ckfxhaufgpkibihj
+    default-encoding: utf-8
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+    redis:
+      host: common-redis-dev.magestack.cn
+      port: 6379
+
