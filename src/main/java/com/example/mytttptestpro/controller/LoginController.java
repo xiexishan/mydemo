@@ -8,8 +8,7 @@ import com.example.mytttptestpro.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,27 +22,26 @@ public class LoginController {
     @Autowired
     UserService userService;
     @Autowired
-    StringRedisTemplate stringRedisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
     @GetMapping("/login")
     public String Login(){
         return "redirect:/pages/login.html";
     }
-
     @RequestMapping("/register")
     @ResponseBody
-    public Result registerUser(UserParam user ){
-        String email = user.getEmail();
+    public Result registerUser(UserParam user){
+        String email = user.getAccount();//邮箱
         String emailCode = user.getEmailCode();
-        BoundHashOperations<String, String, String> hashOps = stringRedisTemplate.boundHashOps("login:email:captcha:"+email);
+        BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps("login:email:captcha:"+email);
         String code = hashOps.get("captcha");
         if(!Objects.equals(code, emailCode)){
-            return new Result("验证码错误",400,null);
+            return Result.fail("验证码错误");
         }
-        User user1 = userService.getOne(new LambdaQueryWrapper<User>()
-                .eq(User::getAccount,user.getAccount()));
+        User user1=userService.getOne(new LambdaQueryWrapper<User>()
+                .eq( user.getAccount() != null && !user.getAccount().equals("") ,User::getAccount, user.getAccount()));
         //如果有这个用户的信息要拒绝注册
         if(user1!=null){
-            return new Result("",100,null);
+            return Result.fail("用户已存在");
         }
         User saveUser = new User();
         BeanUtils.copyProperties(user,saveUser);
@@ -51,8 +49,9 @@ public class LoginController {
         System.out.println(saveUser);
         boolean save = userService.save(saveUser);
         if(!save){
-            return new Result("注册失败",300,null);
+            return Result.fail("保存失败");
         }
-        return new Result("注册成功",200,null);
+        return Result.success();
     }
+
 }

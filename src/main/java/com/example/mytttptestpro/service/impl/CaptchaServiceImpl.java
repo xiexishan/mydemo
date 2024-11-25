@@ -5,8 +5,9 @@ import com.example.mytttptestpro.enums.EmailTemplateEnum;
 import com.example.mytttptestpro.service.CaptchaService;
 import com.example.mytttptestpro.utils.EmailApi;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -15,19 +16,19 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class CaptchaServiceImpl implements CaptchaService {
-    @Resource
-    StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
     @Resource
     EmailApi emailApi;
     @Override
     public boolean sendCaptcha(String email) {
         //一分钟只能发一条
-        sendMailCaptcha("login:email:captcha:"+email);
-        return true;
+        return sendMailCaptcha("login:email:captcha:"+email);
     }
 
     private boolean sendMailCaptcha(String key){
-        BoundHashOperations<String, String, String> hashOps = stringRedisTemplate.boundHashOps(key);
+        BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(key);
+        //BoundHashOperations<String, String, String> hashOps = stringRedisTemplate.boundHashOps(key);
         // 初始检查,判断验证码是否过期，发送次数是否超过5次
         String lastSendTimestamp = hashOps.get("lastSendTimestamp");
         String sendCount = hashOps.get("sendCount");
