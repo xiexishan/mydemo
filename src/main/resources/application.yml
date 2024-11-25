@@ -9,8 +9,8 @@ spring:
   mail:
     host: smtp.qq.com
     protocol: smtp
-    username:  2085337304@qq.com
-    password:  ckfxhaufgpkibihj
+    username:  #qq邮箱
+    password:  #开通的密匙
     default-encoding: utf-8
     properties:
       mail:
@@ -18,6 +18,6 @@ spring:
           ssl:
             enable: true
     redis:
-      host: common-redis-dev.magestack.cn
+      host: #redis
       port: 6379
 
