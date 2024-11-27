@@ -16,8 +16,10 @@ public class User implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    //邮箱
+    //账户
     private String account;
 
     private String password;
+
+    private String email;
 }

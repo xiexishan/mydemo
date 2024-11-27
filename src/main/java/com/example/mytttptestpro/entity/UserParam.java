@@ -21,4 +21,5 @@ public class UserParam implements Serializable {
 
     private String emailCode;
 
+    private String email;
 }
