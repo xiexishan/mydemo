@@ -30,6 +30,7 @@
         <java.version>17</java.version>
     </properties>
 
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -93,19 +94,23 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
             <version>3.4.0</version>
         </dependency>
+        <!-- Spring Boot Starter Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <!-- JWT dependency (jjwt library) -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.12.3</version>
+        </dependency>
 
 
 
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+
 
 </project>
