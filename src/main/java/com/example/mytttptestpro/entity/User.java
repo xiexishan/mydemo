@@ -22,4 +22,12 @@ public class User implements Serializable {
     private String password;
 
     private String email;
+
+    public User(String account) {
+        this.account=account;
+    }
+
+    public User() {
+
+    }
 }
