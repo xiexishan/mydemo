@@ -27,3 +27,12 @@ jwt:
   expiration: 3600000
   tokenPrefix: "Token"
   headerString: "Authorization"
+canal:
+  server: 11111
+  destination: example
+logging:
+  level:
+    com.example: debug
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
+
